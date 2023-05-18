@@ -8,6 +8,9 @@ let todoList = [{task: 'read my books', duedate: '2023-05-21'},
 
 renderTodoList();
 
+let toAddElement = document.querySelector('.js-add-button');
+toAddElement.addEventListener('click', toAddTodo);
+
 function toAddTodo () {
   let taskElement = document.querySelector('.js-todo-name');
   let task = taskElement.value;
@@ -24,19 +27,23 @@ function toAddTodo () {
 
 function renderTodoList() {
   let htmlLists = '';
-  for (i=0; i < todoList.length; i++) {
-    const todo = todoList[i];
+  todoList.forEach((todo, index) => {
     let {task, duedate} = todo;
     const htmlValue = `
       <div>${task}</div>
       <div>${duedate}</div>
       <div>
-      <button class="delete-button" onclick="todoList.splice(${i}, 1)
-      renderTodoList();"
-      >Delete</button>
+      <button class="delete-button js-delete-button">Delete</button>
       </div>
     `;
     htmlLists += htmlValue;
-  }
+  });
+
   document.querySelector('.js-todo-list').innerHTML = htmlLists;
+  document.querySelectorAll('.js-delete-button').forEach((deleteButton, index) => {
+    deleteButton.addEventListener('click', () => {
+      todoList.splice(index, 1);
+      renderTodoList();
+    });
+  });
 }
